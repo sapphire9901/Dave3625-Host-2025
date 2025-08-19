@@ -23,9 +23,9 @@
     An exercise in setting up your Python environment and performing basic python tasks. <br /> This lab will walk you through setting up a Python virtual environment using UV, installing necessary packages, and setting up a Jupyter Notebook for further exercises.
     <br />
     ·
-    <a href="https://github.com/DAVE3625/DAVE3625-24H/issues">Report Bug</a>
+    <a href="https://github.com/DAVE3625/DAVE3625-Host-2025/issues">Report Bug</a>
     ·
-    <a href="https://github.com/DAVE3625/DAVE3625-24H/issues">Request Feature</a>
+    <a href="https://github.com/DAVE3625/DAVE3625-Host-2025/issues">Request Feature</a>
   </p>
 </p>
 
