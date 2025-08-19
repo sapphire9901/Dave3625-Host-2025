@@ -17,9 +17,10 @@
 <br />
 <h3 align="center">Dave3625 - Lab 0</h3>
 <p align="center">
-  <a href="https://github.com/DAVE3625/DAVE3625-24H/tree/main/Lab0">
+  <a href="https://github.com/DAVE3625/DAVE3625-Host-2025/tree/main/Lab0">
     <img src="img/logo.png" alt="Environment Setup" width="auto" height="auto">
-  </a><p align="center">
+  </a>
+  <p align="center">
     An exercise in setting up your Python environment and performing basic python tasks. <br /> This lab will walk you through setting up a Python virtual environment using UV, installing necessary packages, and setting up a Jupyter Notebook for further exercises.
     <br />
     ·
@@ -44,7 +45,7 @@ You are free to use another IDE, just be aware that the TA's may not be able to 
 
 ### 1. Download Visual Studio Code
 
-Download Visual Studio Code from [here].
+Download Visual Studio Code from [here](https://code.visualstudio.com/).
 
 
 ### 2. Install the Python Extension
@@ -61,11 +62,14 @@ Install the Jupyter extension for Visual Studio Code from the "Extensions" menu 
 
 UV is a fast Python package and project manager. Follow the instructions at [UV documentation](https://docs.astral.sh/uv/) to download and install UV.
 
-For most systems, you can install UV using:
+[UV install documentation](https://docs.astral.sh/uv/getting-started/installation/)
 
+For most systems, you can install UV using:
 **macOS/Linux:**
 ```bash
 curl -LsSf https://astral.sh/uv/install.sh | sh
+# Alternatively use Homebrew
+brew install uv
 ```
 
 **Windows:**
@@ -81,43 +85,32 @@ uv --version
 
 ### 2. Create a New UV Project
 
-Creating separate environments for different projects keeps everything organized and prevents dependency problems. It makes sure that changes in one project won't create issues in another, which will make your work easier to manage and debug.
-
-**In your terminal move into the Lab0 folder and initialize the UV project:**
+**Open a new terminal in VS code, move into the Lab0 folder and initialize the UV project:**
 ```bash
 cd Lab0
 uv init
 ```
 
-This will create a `pyproject.toml` file and a virtual environment for your project.
+This will create a `pyproject.toml` file and a `.venv` folder containing your virtual environment for the project. The `pyproject.toml` file manages your project's dependencies and settings, while the `.venv` folder contains the isolated Python environment with all installed packages. You can select this environment as your Python interpreter in your notebook.
+
+**Note:** Creating separate environments for different projects/labs keeps everything organized and prevents dependency problems. It makes sure that changes in one project won't create issues in another, which will make your work easier to manage and debug.
 
 
-Creating separate environments for different projects/labs keeps everything organized and prevents dependency problems. It makes sure that changes in one project won't create issues in another, which will make your work easier to manage and debug.
+### 3. Install Python Packages
 
-
-### 3. Activate the Environment
-
-UV automatically manages virtual environments. To work with your project:
-
-```bash
-source .venv/bin/activate
-```
-
-
-### 4. Install Python Packages
-
-You can install Python packages (pandas, numpy, matplotlib, scipy, jupyter notebook, ipykernel) using:
+In order to use notebooks using uv you must install: jupyter notebook and ipykernel using the following command:
 
 ```bash 
-uv add pandas numpy matplotlib scipy jupyter ipykernel
+uv add jupyter ipykernel
 ```
 
 
-### 7. Create a New Jupyter Notebook
-Create a new Jupyter Notebook by creating a file with a .ipynb extension (e.g., new_notebook.ipynb).
+### 4. Create a New Jupyter Notebook
+Create a new Jupyter Notebook by creating a file with a .ipynb extension (e.g., lab0.ipynb).
 
 
-### 8. Open the Notebook in VSCode
+
+### 5. Open the Notebook in VSCode
 Open the notebook file in Visual Studio Code and select the UV environment Python interpreter in the top right.
 
 
@@ -148,7 +141,7 @@ Learn to store and use values in variables.
 1. Create variables to store a name and an age.
 2. Print the values of the variables in a formatted string.
 
-### Task 4: Loops
+### Task 4: Simple loops
 
 Use a loop to repeat an action multiple times.
 
@@ -160,7 +153,22 @@ Use a loop to repeat an action multiple times.
 Implement decision-making in your code using if-else statements.
 
 1. Write an if-statement that checks if a number is greater than 5.
-2. Print a message based on whether the condition is true or false.## Practical Tips
+2. Print a message based on whether the condition is true or false.
+
+### Task 6: Match-Case Statements(requires Python 3.10+)
+
+Learn to use Python's modern match-case syntax for pattern matching (Python 3.10+).
+
+1. Create a variable that stores a day of the week (as a string, e.g., "Monday", "Tuesday", etc.).
+2. Use a match-case statement to:
+   - Print "Start of the work week!" for Monday
+   - Print "Midweek already!" for Wednesday
+   - Print "Almost weekend!" for Friday
+   - Print "Weekend time!" for Saturday or Sunday
+   - Print "Just another day" for any other day
+3. Test your code with different day values.
+
+**Bonus:** Extend the match-case to handle both uppercase and lowercase input (e.g., "monday" and "Monday").
 
 ## Additional information
 
@@ -186,7 +194,7 @@ Implement decision-making in your code using if-else statements.
 
 #### 6. **Interpreter Selection in VS Code**
    - After opening a Jupyter Notebook in VS Code, ensure you select the correct Python interpreter from the UV environment in the top right corner to avoid import errors.
-   - The interpreter path will typically be in `.venv/bin/python` or `.venv/Scripts/python.exe` (Windows).## Useful UV Commands
+   - The interpreter path will typically be in `.venv/bin/python` or `.venv/Scripts/python.exe` (Windows).
 
 ## Useful commands
 
@@ -217,6 +225,13 @@ Implement decision-making in your code using if-else statements.
      ```bash
      uv run python script.py
      uv run jupyter notebook
+     ```
+  - **Activate environment in the terminal:**
+     ```bash
+     # macOS/linux
+     source .venv/bin/activate
+     # Windows
+     source .venv\scripts\activate
      ```
 
 #### 3. **Installing and Managing Packages**
@@ -282,4 +297,3 @@ Distributed under the MIT License. See `LICENSE` for more information.
 [issues-url]: https://github.com/DAVE3625/Dave3625-Host-2025/issues
 [license-shield]: https://img.shields.io/github/license/othneildrew/Best-README-Template.svg?style=for-the-badge
 [license-url]: https://github.com/DAVE3625/DAVE3625-Host-2025/blob/main/Lab0/LICENSE
-[here]: https://code.visualstudio.com/
