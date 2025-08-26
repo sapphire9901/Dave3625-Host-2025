@@ -1,3 +1,6 @@
+[![Issues][issues-shield]][issues-url]
+[![MIT License][license-shield]][license-url]
+
 # DAVE3625 - Lab5
 
 <p align="center">
@@ -7,7 +10,7 @@
 </p>
 
 <p align="center">
-  Decision Trees | Random Forest | Naive Bayes<br>
+  KNN and SVM on Wine Quality Dataset<br>
   <br />
   ·
   <a href="https://github.com/DAVE3625/DAVE3625-24H/issues">Report Bug</a>
@@ -16,32 +19,44 @@
 </p>
 
 ## Table of Contents
-- [About The Lab](#about-the-lab)
-- [Instructions](#instructions)
-- [Imports](#imports)
-- [Tasks](#tasks)
 
-  - [Task 1: Load and Explore the Student Performance Dataset](#task-1-load-and-explore-the-student-performance-dataset)
-  - [Task 2: Prepare the Target Variable](#task-2-prepare-the-target-variable)
-  - [Task 3: Data Preprocessing](#task-3-data-preprocessing)
-  - [Task 4: Split the Dataset](#task-4-split-the-dataset)
-  - [Task 5: Apply Decision Tree Classifier](#task-5-apply-decision-tree-classifier)
-  - [Task 6: Apply Random Forest Classifier](#task-6-apply-random-forest-classifier)
-  - [Task 7: Apply Naive Bayes Classifier](#task-7-apply-naive-bayes-classifier)
-  - [Task 8: Reflection](#task-8-reflection)
-- [Great Job!](#great-job)
+1. [About The Lab](#about-the-lab)
+2. [Imports](#imports)
+3. [Tasks](#tasks)
+    - [Task 1: Load and Explore the Dataset](#task-1-load-and-explore-the-dataset)
+    - [Task 2: Preprocess the Data](#task-2-preprocess-the-data)
+    - [Task 3: Feature Scaling - Data Standardization](#task-3-feature-scaling---data-standardization)
+    - [Task 4: Split the Dataset](#task-4-split-the-dataset)
+    - [Understanding Accuracy and Confusion Matrix](#understanding-accuracy-and-confusion-matrix)
+    - [Task 5: Apply K-Nearest Neighbors (KNN) Classifier](#task-5-apply-k-nearest-neighbors-knn-classifier)
+    - [Task 6: Apply Support Vector Machine (SVM) Classifier](#task-6-apply-support-vector-machine-svm-classifier)
+    - [Task 7: Compare the Performance of Different Classifiers and General Reflection](#task-7-compare-the-performance-of-different-classifiers-and-general-reflection)
+
+
+</details>
 
 ## About The Lab
 
-In this lab, the goal is to uderstand and apply **Decision Trees**, **Random Forest**, and **Naive Bayes** classifiers on binary and multiclass classification problems.
+In this lab, you will gain hands-on experience with several key concepts and techniques in machine learning:
+
+- **K-Nearest Neighbors (KNN)**: Implement and understand the KNN algorithm for classification tasks.
+- **Support Vector Machines (SVM)**: Explore SVMs with different kernels and understand their impact on classification.
+- **Data standardization**: Understand the importance of feature scaling and standardization for certain algorithms.
+- **Evaluation Metrics**: Learn about **[Accuracy][whatis-accuracy]** and **[Confusion Matrix][whatis-confusion-matrix]** to evaluate classification models.
+### Tools and Libraries
 
 
 
 ### Instructions
 
-In this lab, you will work with the following dataset:
+In this lab, you will work with the Wine Quality dataset to predict wine quality using various classification algorithms.
+- Follow the instructions from the tasks.
+- Watch the videos
+- Feel free to look at the hints
+- Contact the TA's if you have any doubts or questions
 
-**Student Performance Dataset:** Data for different students with a many variables. We will use it for classification to predict whether a given student gets a pass or fail grade.
+
+**Check the Solution**: Try your best before looking at the solutioons.
 
 Good luck, and enjoy the lab!
 
@@ -71,7 +86,7 @@ conda install pandas numpy matplotlib seaborn scikit-learn
 ```
 
 
-**Import modules:**
+
 ```python
 # Import modules
 %matplotlib inline
@@ -82,32 +97,25 @@ import seaborn as sns
 
 # Import modules for machine learning
 from sklearn.model_selection import train_test_split, GridSearchCV
-from sklearn.tree import DecisionTreeClassifier, plot_tree
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.svm import SVC
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.naive_bayes import GaussianNB, MultinomialNB, BernoulliNB
-from sklearn.preprocessing import LabelEncoder, StandardScaler, OneHotEncoder
-from sklearn.metrics import confusion_matrix, accuracy_score, classification_report
+from sklearn.preprocessing import StandardScaler
+from sklearn.metrics import confusion_matrix, accuracy_score
 ```
 
 
 ## Tasks
-
-## Task 1: Load and Explore the Student Performance Datset
-The Student Performance Dataset contains student achievement data, including various attributes related to their academic and personal backgrounds. The goal is to predict whether a student needs intervention based on their performance.
-
-You can read more about the dataset and the meaning of the columns/variables here: https://www.kaggle.com/datasets/larsen0966/student-performance-data-set
+## Task 1: Load and Explore the Datset
+The Wine Quality dataset (UCI Machine Learning Repository) contains information about red and white variants of the Portuguese "Vinho Verde" wine.
 
 Instructions:
 
-1. Load the Student_Performance dataset into a pandas DataFrame.
+1. Load the dataset into a pandas DataFrame. You can use either the red wine or white wine dataset, or combine them if you wish.
 
 2. Display the first few rows of the dataset.
 
 3. Get a summary of the dataset, including data types and descriptive statistics.
-
-4. Visualize the distribution of the target variable (G3).
-
-5. (Bonus) Have a look at the documentation for the dataset to understand the columns of the dataset better. 
 
 
 <details>
@@ -119,108 +127,86 @@ Instructions:
 
   **Hint 3**: To get a summary of the dataset, you can use the `.info()` method for data types and the `.describe()` method for descriptive statistics.
 
+</details>
 
-  **Hint 4**: To visualize the distribution of the target variable, you can use the `sns.countplot()` function from the seaborn library.
+****
+
+## Task 2: Preprocess the Data
+
+Before we can apply machine learning algorithms, we need to preprocess the data.
+
+Instructions:
+
+1. Explore the 'quality' column and consider converting it into a binary classification problem (e.g., wine is 'good' if quality >= 7, otherwise 'not good').
+2. Plot the distribution of the new target variable.
+
+<details>
+  <summary>Hints</summary>
+
+  
+  **Hint 1**: To convert the 'quality' column into a binary classification problem, you can use the `.apply()` method with a lambda function.
+
+  ```Python
+  # Convert 'quality' into binary classes
+  df['quality_binary'] = np.where(df['quality'] >= 7, 1, 0)
+  ```
 
 
-  ```python
-  # Visualize the distribution of the target variable
-  sns.countplot(x='target_column', data=df)
-  plt.title('Distribution of Target Variable')
-  plt.xlabel('Target')
+  **Hint 2**: To plot the distribution of the new target variable, you can use the `sns.countplot()` function from the seaborn library.
+  ```Python
+  # Plot distribution
+  sns.countplot(x='quality_binary', data=df)
+  plt.title('Distribution of Wine Quality')
+  plt.xlabel('Quality (0 = Not Good, 1 = Good)')
   plt.ylabel('Count')
   plt.show()
   ```
 
-  **Hint 5**: https://www.kaggle.com/datasets/larsen0966/student-performance-data-set
-
-
-</details>
-
-****
-
-## Task 2: Prepare the target variable
-
-First we should rename the columns G1, G2 and G3 for conveniance. Then we will create it a binary class for Pass/Fail so that we can use certain machine learning algorithms on the data.
-
-Instructions:
-
-1. Rename the columns G1, G2, G3 in the dataframe:
-- G1 ➔ period_1_grades
-- G2 ➔ period_2_grades
-- G3 ➔ final_grade
-2. Create a new binary target variable passed based on the final_grade column:
-
-- If final_grade is greater than or equal to a certain threshold (e.g., 10), then passed is True.
-Otherwise, passed is False.
-
-**QUESTION:** What percentage of students passed based on the threshold?
-
-<details>
-  <summary>Hints</summary>
-
-
-  **Hint 1**: To rename the columns, you can use the `rename()` method of the DataFrame.
-
-  ```python
-  # Rename columns
-  df.rename(columns={'G1': 'period_1_grades', 'G2': 'period_2_grades', 'G3': 'final_grade'}, inplace=True)
-  ```
-
-  **Hint 2**: To create a new binary target variable, you can use the `apply()` method with a lambda function.
-
-  ```python
-  # Create binary target variable
-  df['passed'] = df['final_grade'].apply(lambda x: True if x >= 10 else False)
-  ```
-
-
 </details>
 
 ****
 
 
-## Task 3: Data Preprocessing
+## Task 3: Feature Scaling - Data Standardization
 
-Now that we have our target variable passed, we need to preprocess the data before applying machine learning algorithms.
+Feature scaling ensures that each feature contributes equally to the result, preventing features with larger scales from dominating the learning process. Standardization transforms features to have a mean of 0 and a standard deviation of 1, which is crucial for algorithms like KNN and SVM.
+
+
+(For a deeper understanding of feature scaling and its importance in machine learning, you can refer to this [GeeksforGeeks article on feature scaling: normalization vs standardization](https://www.geeksforgeeks.org/normalization-vs-standardization/).)
+
 
 Instructions:
 
-1. Identify the numerical columns in the DataFrame df.
-2. Drop the columns which are not numerical, except the "passed" column.
-3. Check for missing values in the numerical data and handle them if necessary.
+1. Separate the features and the target variable.
+2. Use `StandardScaler` to standardize the feature data.
+ (We imported the class from the `sklearn.preprocessing` module)
+
+  ```python
+  # Normalize the feature data
+  scaler = StandardScaler()
+  X_scaled = scaler.fit_transform(X)
+  ```
+3. Compare the data before and after scaling.
 
 <details>
   <summary>Hints</summary>
 
-
-  **Hint 1**: To identify the numerical columns, you can create a list of column names that correspond to numerical data.
-
-  ```python
-  # List of numerical columns
-  numerical_cols = ['age', 'Medu', 'Fedu', 'traveltime', 'studytime', 'failures',
-            'famrel', 'freetime', 'goout', 'Dalc', 'Walc', 'health',
-            'absences', 'period_1_grades', 'period_2_grades']
-  ```
-
-  **Hint 2**: You dont actually have to drop all the columns, you can create a new dataframe with only the numerical columns and with the "passed" column. 
+  **Hint 1**: To separate the features and the target variable, you can use the `.drop()` method to drop the target column from the DataFrame and assign it to `X`, and assign the target column to `y`.
 
   ```python
-  # Create a new dataset with numerical columns and the 'passed' column
-  df_numeric = df[numerical_cols + ['passed']]
+  # Separate features and target
+  X = df.drop(['quality', 'quality_binary'], axis=1)
+  y = df['quality_binary']
   ```
 
-
-
-  **Hint 3**: To check for missing values in the numerical data, you can use the `isnull()` method combined with `sum()`.
+  **Hint 2**: To compare the data before and after scaling, you can create a DataFrame from the scaled data and use the `.describe()` method to show descriptive statistics.
 
   ```python
-  # Check for missing values
-  missing_values = df_numerical.isnull().sum()
-  print(missing_values)
+  # Compare data before and after scaling
+  X_scaled_df = pd.DataFrame(X_scaled, columns=X.columns)
+  print("Before Scaling:\n", X['pH'].head(5))
+  print("After Scaling:\n", X_scaled_df['pH'].head(5))
   ```
-
-
 
 </details>
 
@@ -228,39 +214,23 @@ Instructions:
 
 ## Task 4: Split the Dataset
 
-We need to split the dataset into training and testing sets.
+We need to split the dataset into training and testing sets to evaluate our models.
 
 Instructions:
 
+1. Use train_test_split to split the data into training and testing sets (e.g., 70% training, 30% testing).
 
-
-1. Separate features and target variable
-
-2. Use train_test_split to split the data (e.g., 70% training, 30% testing).
+2. Set a random state for reproducibility.
 
 <details>
   <summary>Hint</summary>
 
-
-  **Hint 1**: To separate features and target variable, you can create two separate DataFrames: one for the features (X) and one for the target variable (y).
-
   ```python
-  # Separate features and target variable
-  X = df_numeric.drop(columns=['passed'])
-  y = df_numeric['passed']
+  # Split the dataset
+  X_train, X_test, y_train, y_test = train_test_split(X_scaled, y, test_size=0.3, random_state=42)
+
   ```
-
-  **Hint 2**: To split the data into training and testing sets, you can use the `train_test_split` function from the `sklearn.model_selection` module. Specify the test size (e.g., 0.3 for 30% testing data) and a random state for reproducibility.
-
-  ```python
-  # Split the data into training and testing sets
-  X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
-  ```
-  
-
 </details>
-
-
 
 ****
 
@@ -268,44 +238,84 @@ Instructions:
 
 
 
+***Read this before doing task 5***
 
+## Understanding Accuracy and Confusion Matrix:
 
-## Task 5: Apply Decision Tree Classifier
+- **Accuracy**: The ratio of correctly predicted observations to the total observations. It answers the question: "How often is the classifier correct?"
 
-Now, let's build and evaluate a Decision Tree classifier.
+  \[
+  \text{Accuracy} = \frac{\text{Number of Correct Predictions}}{\text{Total Number of Predictions}}
+  \]
+
+- **Confusion Matrix**: A table used to describe the performance of a classification model. It shows the counts of True Positives (TP), True Negatives (TN), False Positives (FP), and False Negatives (FN).
+
+  |                | Predicted Positive | Predicted Negative |
+  |----------------|--------------------|--------------------|
+  | **Actual Positive** | True Positive (TP) | False Negative (FN) |
+  | **Actual Negative** | False Positive (FP) | True Negative (TN) |
+
+### Interpretation:
+
+- **True Positives (TP)**: Correctly predicted positive observations.
+- **True Negatives (TN)**: Correctly predicted negative observations.
+- **False Positives (FP)**: Incorrectly predicted positive observations (Type I error).
+- **False Negatives (FN)**: Incorrectly predicted negative observations (Type II error).
+
+****
+## Task 5: Apply K-Nearest Neighbors (KNN) Classifier
+Now, let's build and evaluate a KNN classifier.
 
 Instructions:
 
-1. Initialize a Decision Tree classifier.
-2. Train the model on the training data.
-3. Make predictions on the test set.
+1. Initialize a KNN classifier.
+2. Use cross-validation to find the optimal value of K (number of neighbors).
+3. Train the model with the optimal K.
+4. Make predictions on the test set.
 5. Evaluate the model using accuracy score and confusion matrix.
+
 
 <details>
   <summary>Hints</summary>
 
-  **Hint 1**: To initialize a Decision Tree classifier, you can use the `DecisionTreeClassifier` class from the `sklearn.tree` module.
+  **Hint 1**: To initialize a KNN classifier, you can use the `KNeighborsClassifier` class from the `sklearn.neighbors` module.
 
   ```python
-  # Initialize Decision Tree classifier
-  dt = DecisionTreeClassifier()
+  # Initialize KNN classifier
+  knn = KNeighborsClassifier()
   ```
 
-  **Hint 2**: To train the model, just use fit()
+  **Hint 2**: To use cross-validation to find the optimal value of K, you can use the `GridSearchCV` class from the `sklearn.model_selection` module. Define a parameter grid with different values of K and fit the grid search to the training data.
 
   ```python
-  # Train the model
-  dt.fit(X_train, y_train)
+  # Define parameter grid
+  param_grid = {'n_neighbors': np.arange(1, 31)}
+
+  # Use GridSearchCV to find the optimal K
+  knn_gscv = GridSearchCV(knn, param_grid, cv=5)
+  knn_gscv.fit(X_train, y_train)
+
+  # Get the optimal K
+  optimal_k = knn_gscv.best_params_['n_neighbors']
+  print(f"Optimal K: {optimal_k}")
   ```
 
-  **Hint 3**: To make predictions on the test set, use the `predict` method of the trained model.
+  **Hint 3**: To train the model with the optimal K, initialize the KNN classifier with the optimal K and fit it to the training data.
 
   ```python
-  # Make predictions
-  y_pred_dt = dt.predict(X_test)
+  # Train the model with the optimal K
+  knn_optimal = KNeighborsClassifier(n_neighbors=optimal_k)
+  knn_optimal.fit(X_train, y_train)
   ```
 
-  **Hint 4**: To evaluate the model using accuracy score and confusion matrix, use the `accuracy_score` and `confusion_matrix` functions from the `sklearn.metrics` module.
+  **Hint 4**: To make predictions on the test set, use the `predict` method of the trained model.
+
+  ```python
+  # Make predictions on the test set
+  y_pred = knn_optimal.predict(X_test)
+  ```
+
+  **Hint 5**: To evaluate the model using accuracy score and confusion matrix, use the `accuracy_score` and `confusion_matrix` functions from the `sklearn.metrics` module.
 
   ```python
   # Evaluate the model
@@ -319,173 +329,211 @@ Instructions:
 
 </details>
 
-**Additional Resources**
+<br>
 
-For a more in-depth understanding of Decision Trees, check out this excellent video from StatQuest:
+ **Additional Resources**
 
-[![StatQuest: Decision Trees](https://img.youtube.com/vi/_L39rN6gz7Y/0.jpg)](https://www.youtube.com/watch?v=_L39rN6gz7Y&ab_channel=StatQuestwithJoshStarmer)
+For a more in-depth understanding of K-Nearest Neighbors (KNN), check out this excellent video from StatQuest:
 
-Readings: 
-https://www.geeksforgeeks.org/decision-tree/
+[![StatQuest: K-Nearest Neighbors (KNN)](https://img.youtube.com/vi/HVXime0nQeI/0.jpg)](https://www.youtube.com/watch?v=HVXime0nQeI&t=249s&ab_channel=StatQuestwithJoshStarmer)
 
 
 ****
 
-## Task 6: Apply Random Forest Classifier
 
-Let's apply a Random Forest classifier and evaluate its performance.
+## Task 6: Apply Support Vector Machine (SVM) Classifier
 
-### Instructions:
+Let's apply SVM with different kernels and evaluate the performance.
 
-1. Initialize a Random Forest classifier.
-2. Train the model on the training data.
+Instructions:
+
+1. Initialize SVM classifiers with different kernels ('linear', 'rbf').
+2. Train the models on the training data.
 3. Make predictions on the test set.
-4. Evaluate the model using accuracy score and confusion matrix.
+4. Evaluate the models using accuracy score and confusion matrix.
 
 <details>
   <summary>Hints</summary>
 
-  **Hint 1**: To initialize a Random Forest classifier, you can use the `RandomForestClassifier` class from the `sklearn.ensemble` module.
+  **Hint 1**: To initialize SVM classifiers with different kernels, you can use the `SVC` class from the `sklearn.svm` module.
 
   ```python
-  # Initialize Random Forest classifier
-  rf = RandomForestClassifier()
+  # Initialize SVM classifiers with different kernels
+  svm_linear = SVC(kernel='linear')
+  svm_rbf = SVC(kernel='rbf')
   ```
 
-  **Hint 2**: To train the model, use the `fit` method of the Random Forest classifier.
+  **Hint 2**: To train the models on the training data, use the `fit` method of the SVM classifiers.
 
   ```python
-  # Train the model
-  rf.fit(X_train, y_train)
+  # Train the models
+  svm_linear.fit(X_train, y_train)
+  svm_rbf.fit(X_train, y_train)
   ```
 
-  **Hint 3**: To make predictions on the test set, use the `predict` method of the trained model.
+  **Hint 3**: To make predictions on the test set, use the `predict` method of the trained models.
 
   ```python
-  # Make predictions
-  y_pred_rf = rf.predict(X_test)
+  # Make predictions on the test set
+  y_pred_linear = svm_linear.predict(X_test)
+  y_pred_rbf = svm_rbf.predict(X_test)
   ```
 
-  **Hint 4**: To evaluate the model using accuracy score and confusion matrix, use the `accuracy_score` and `confusion_matrix` functions from the `sklearn.metrics` module.
+  **Hint 4**: To evaluate the models using accuracy score and confusion matrix, use the `accuracy_score` and `confusion_matrix` functions from the `sklearn.metrics` module.
 
   ```python
-  # Evaluate the model
-  accuracy_rf = accuracy_score(y_test, y_pred_rf)
-  cm_rf = confusion_matrix(y_test, y_pred_rf)
+  # Evaluate the models
+  accuracy_linear = accuracy_score(y_test, y_pred_linear)
+  cm_linear = confusion_matrix(y_test, y_pred_linear)
 
-  print(f"Accuracy: {accuracy_rf}")
-  print("Confusion Matrix:")
-  print(cm_rf)
+  accuracy_rbf = accuracy_score(y_test, y_pred_rbf)
+  cm_rbf = confusion_matrix(y_test, y_pred_rbf)
+
+  print(f"Linear Kernel - Accuracy: {accuracy_linear}")
+  print("Linear Kernel - Confusion Matrix:")
+  print(cm_linear)
+
+  print(f"RBF Kernel - Accuracy: {accuracy_rbf}")
+  print("RBF Kernel - Confusion Matrix:")
+  print(cm_rbf)
   ```
 
 </details>
 
+<br>
+
 **Additional Resources**
 
-For a more in-depth understanding of Random Forests, check out this excellent 2 part video from StatQuest:
+For a more in-depth understanding of Support Vector Machines (SVM), check out this excellent video from StatQuest:
+[![Visually Explained: Support Vector Machines (SVM)](https://img.youtube.com/vi/_YPScrckx28/0.jpg)](https://www.youtube.com/watch?v=_YPScrckx28&ab_channel=VisuallyExplained)
 
-[![StatQuest: Random Forests](https://img.youtube.com/vi/J4Wdy0Wc_xQ/0.jpg)](https://www.youtube.com/watch?v=J4Wdy0Wc_xQ&ab_channel=StatQuestwithJoshStarmer)
+For a more in-depth understanding of Support Vector Machines (SVM), check out these additional resources:
 
-
-[![StatQuest: Random Forests Part 2](https://img.youtube.com/vi/sQ870aTKqiM/0.jpg)](https://www.youtube.com/watch?v=sQ870aTKqiM&ab_channel=StatQuestwithJoshStarmer)
-
-Readings:
-- [Random Forest Algorithm - GeeksforGeeks](https://www.geeksforgeeks.org/random-forest-algorithm-in-machine-learning/)
+- [(3 Part video series on SVM) StatQuest: Support Vector Machines (SVM)](https://www.youtube.com/watch?v=efR1C6CvhmE&ab_channel=StatQuestwithJoshStarmer)
+- [(Article) GeeksforGeeks: Support Vector Machine Algorithm](https://www.geeksforgeeks.org/support-vector-machine-algorithm/)
 
 ****
 
 
 
-## Task 7: Apply Naive Bayes Classifier
+## Task 7: Compare the Performance of Different Classifiers and General Reflection
 
-Let's apply a Naive Bayes classifier and evaluate its performance.
+Let's compare the performance of the KNN and SVM classifiers that we have trained.
 
 ### Instructions:
 
-1. Initialize a Naive Bayes classifier.
-2. Train the model on the training data.
-3. Make predictions on the test set.
-4. Evaluate the model using accuracy score and confusion matrix.
+1. **Create a summary table of the accuracy scores of each classifier.**
 
+```python
+# Summary table of accuracy scores
+summary = {
+  'Classifier': ['KNN', 'SVM (Linear Kernel)', 'SVM (RBF Kernel)'],
+  'Accuracy': [accuracy, accuracy_linear, accuracy_rbf]
+}
+summary_df = pd.DataFrame(summary)
+print(summary_df)
+```
 <details>
-  <summary>Hints</summary>
 
-  **Hint 1**: To initialize a Naive Bayes classifier, you can use the `GaussianNB` class from the `sklearn.naive_bayes` module.
+**<summary>2. Plot ROC curves for each classifier (optional).</summary>**
 
-  ```python
-  # Initialize Naive Bayes classifier
-  nb = GaussianNB()
-  ```
+```python
+from sklearn.metrics import roc_curve, auc
 
-  **Hint 2**: To train the model, use the `fit` method of the Naive Bayes classifier.
+# Compute ROC curve and ROC area for each classifier
+fpr_knn, tpr_knn, _ = roc_curve(y_test, knn_optimal.predict_proba(X_test)[:,1])
+roc_auc_knn = auc(fpr_knn, tpr_knn)
 
-  ```python
-  # Train the model
-  nb.fit(X_train, y_train)
-  ```
+fpr_svm_linear, tpr_svm_linear, _ = roc_curve(y_test, svm_linear.decision_function(X_test))
+roc_auc_svm_linear = auc(fpr_svm_linear, tpr_svm_linear)
 
-  **Hint 3**: To make predictions on the test set, use the `predict` method of the trained model.
+fpr_svm_rbf, tpr_svm_rbf, _ = roc_curve(y_test, svm_rbf.decision_function(X_test))
+roc_auc_svm_rbf = auc(fpr_svm_rbf, tpr_svm_rbf)
 
-  ```python
-  # Make predictions
-  y_pred_nb = nb.predict(X_test)
-  ```
-
-  **Hint 4**: To evaluate the model using accuracy score and confusion matrix, use the `accuracy_score` and `confusion_matrix` functions from the `sklearn.metrics` module.
-
-  ```python
-  # Evaluate the model
-  accuracy_nb = accuracy_score(y_test, y_pred_nb)
-  cm_nb = confusion_matrix(y_test, y_pred_nb)
-
-  print(f"Accuracy: {accuracy_nb}")
-  print("Confusion Matrix:")
-  print(cm_nb)
-  ```
-
+# Plot ROC curves
+plt.figure()
+plt.plot(fpr_knn, tpr_knn, color='blue', lw=2, label='KNN (area = %0.2f)' % roc_auc_knn)
+plt.plot(fpr_svm_linear, tpr_svm_linear, color='green', lw=2, label='SVM Linear (area = %0.2f)' % roc_auc_svm_linear)
+plt.plot(fpr_svm_rbf, tpr_svm_rbf, color='red', lw=2, label='SVM RBF (area = %0.2f)' % roc_auc_svm_rbf)
+plt.plot([0, 1], [0, 1], color='gray', lw=2, linestyle='--')
+plt.xlim([0.0, 1.0])
+plt.ylim([0.0, 1.05])
+plt.xlabel('False Positive Rate')
+plt.ylabel('True Positive Rate')
+plt.title('Receiver Operating Characteristic (ROC) Curves')
+plt.legend(loc="lower right")
+plt.show()
+```
 </details>
 
-**Additional Resources**
-
-For a more in-depth understanding of Naive Bayes, check out this excellent video from StatQuest:
-
-[![StatQuest: Naive Bayes](https://img.youtube.com/vi/O2L2Uv9pdDA/0.jpg)](https://www.youtube.com/watch?v=O2L2Uv9pdDA&ab_channel=StatQuestwithJoshStarmer)
-
-[![StatQuest: Gaussian Naive Bayes](https://img.youtube.com/vi/H3EjCKtlVog/0.jpg)](https://www.youtube.com/watch?v=H3EjCKtlVog)
-
-Readings:
-- [Naive Bayes Algorithm - GeeksforGeeks](https://www.geeksforgeeks.org/naive-bayes-classifiers/)
 
 ****
 
-## Task 8: Reflection
+### Reflection
 
-In this section, you will reflect on the tasks you have completed and consider additional challenges to deepen your understanding of the concepts. Answer the following questions and try out the suggested challenges:
+**1. Which classifier performed the best based on accuracy?**
 
-### Questions for Reflection
+**2. Considering both accuracy and confusion matrices, which model would you choose and why?**
 
-1. **Model Performance Comparison**: Which models performed better in terms of accuracy and confusion matrix? Why do you think that is the case?
-2. **Feature Importance**: How important were the features G1, G2, and G3 in predicting the target variable? How would the model performance change if you removed these features from the dataset?
-3. **Data Preprocessing**: How did data preprocessing steps like feature scaling and handling missing values impact the performance of the models?
-4. **Model Selection**: If you had to choose one model for deployment, which one would it be and why? Consider factors like accuracy, interpretability, and computational efficiency.
-5. **Hyperparameter Tuning**: How did hyperparameter tuning affect the performance of the models? What other hyperparameters could you tune to potentially improve the models?
+**3. Could you use the models trained on red wine to predict the quality if the different white wines?**
 
-### Additional Challenges
+**4. Reflect on how you might apply the techniques learned in this lab to other datasets and machine learning problems.**
 
-1. **Feature Engineering**: Try creating new features from the existing ones. For example, you could create an average grade feature from G1, G2, and G3. How does this new feature impact model performance?
-2. **Cross-Validation**: Implement cross-validation to get a more robust estimate of model performance. How do the results compare to the train-test split method?
-3. **Ensemble Methods**: Experiment with other ensemble methods like Gradient Boosting or AdaBoost. How do these methods compare to the Random Forest classifier?
-4. **Dimensionality Reduction**: Apply dimensionality reduction techniques like PCA (Principal Component Analysis) to the dataset. How does this affect model performance?
-5. **Different Datasets**: Try applying the same models and preprocessing steps to a different dataset. How do the results compare?
 
-Reflecting on these questions and trying out the additional challenges will help you gain a deeper understanding of the machine learning concepts and improve your problem-solving skills.
+
 
 
 ## Great Job!
 
-Congratulations on completing the lab! 🎉 
+Congratulations on completing the lab! You've done an excellent job working through the tasks and applying various machine learning algorithms to the Wine Quality dataset. Here's a quick recap of what you've accomplished:
+
+- **Loaded and explored the dataset**: You successfully loaded the dataset and performed initial exploration to understand its structure and contents.
+- **Preprocessed the data**: You converted the 'quality' column into a binary classification problem and visualized the distribution of the new target variable.
+- **Standardized the features**: You applied feature scaling to ensure that each feature contributed equally to the learning process.
+- **Split the dataset**: You split the data into training and testing sets to evaluate the performance of your models.
+- **Applied K-Nearest Neighbors (KNN)**: You found the optimal value of K using cross-validation, trained the KNN classifier, and evaluated its performance.
+- **Applied Support Vector Machine (SVM)**: You trained SVM classifiers with different kernels and evaluated their performance.
+- **Compared classifiers**: You compared the performance of KNN and SVM classifiers and reflected on their results.
 
 
 👏 **Well done!** 👏
 
+## Usefull links
 
+[pandas cheatsheet][pandas-cheatsheet]
+
+[matplotlib cheatsheet][matplotlib-cheatsheet]
+
+[seaborn cheatsheet][seaborn-cheatsheet]
+
+[sklearn cheatsheet][sklearn-cheatsheet]
+
+<!-- MARKDOWN LINKS & IMAGES -->
+<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
+<!-- shields -->
+[issues-shield]: https://img.shields.io/github/issues/umaimehm/Intro_to_AI_2021.svg?style=for-the-badge
+[issues-url]: https://github.com/DAVE3625/DAVE3625-24H/issues
+[license-shield]: https://img.shields.io/github/license/othneildrew/Best-README-Template.svg?style=for-the-badge
+[license-url]: https://github.com/DAVE3625/DAVE3625-24H/blob/main/Lab1/LICENSE
+
+<!-- images -->
+
+
+<!-- documentation -->
+[pandas-doc]: https://pandas.pydata.org/docs/
+[numpy-doc]: https://numpy.org/doc/stable/
+[seaborn-doc]: https://seaborn.pydata.org/
+[sklearn-doc]: https://scikit-learn.org/0.21/documentation.html
+
+<!-- tutorials -->
+[pandas-cheatsheet]: https://pandas.pydata.org/Pandas_Cheat_Sheet.pdf
+[matplotlib-cheatsheet]: https://matplotlib.org/cheatsheets/
+[sklearn-cheatsheet]: https://www.datacamp.com/cheat-sheet/scikit-learn-cheat-sheet-python-machine-learning
+[seaborn-cheatsheet]: https://www.kaggle.com/code/themlphdstudent/cheat-sheet-seaborn-charts
+
+
+<!-- links -->
+[regex]: https://www.geeksforgeeks.org/python-regex-cheat-sheet/
+[solution]: solution.ipynb
+[whatis-accuracy]: https://developers.google.com/machine-learning/crash-course/classification/accuracy
+[whatis-confusion-matrix]: https://developers.google.com/machine-learning/crash-course/classification/true-false-positive-negative
