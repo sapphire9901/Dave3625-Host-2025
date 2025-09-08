@@ -65,7 +65,7 @@ StudentID, Age, email, hrsStudy, FinalGrade
   #If you want to use the csv from this git set
   # url = "https://github.com/DAVE3625/Dave3625-Host-2025/blob/main/Lab2/data/stud.csv"
   # You can also download the csv and set
-  # url="{filepath]/stud.csv"
+  # url="{filepath}/stud.csv"
   df = pd.read_csv(url, sep=',')
   df.head()
   
@@ -181,7 +181,7 @@ StudentID, Age, email, hrsStudy, FinalGrade
   **Q: How do I remove outliers?**
   
   **A:**
-  Check [kite][kite-outliers] for a hint.
+  Check [Geeksforgeeks][geeks] for a hint.
   On this set edit
   ```python
   filtered_entries = (abs_z_scores < 3).all(axis=1)
@@ -224,8 +224,8 @@ Distributed under the MIT License. See `LICENSE` for more information.
 [pandas-doc]: https://pandas.pydata.org/docs/reference/index.html#api
 [numpy-doc]: https://numpy.org/doc/stable/
 [columns-condition]: https://www.dataquest.io/blog/tutorial-add-column-pandas-dataframe-based-on-if-else-condition/
-[kite-outliers]: https://www.kite.com/python/answers/how-to-remove-outliers-from-a-pandas-dataframe-in-python/
+[geeks]: https://www.geeksforgeeks.org/data-science/detect-and-remove-the-outliers-using-python/
 [pandas-tutorial]: https://github.com/TirendazAcademy/PANDAS-TUTORIAL
 [jupyter-tutorial]: https://www.youtube.com/watch?v=vmEHCJofslg
-[solution]: Solution.ipynb
+[solution]: solution.ipynb
 [Pandas]: Pandas.ipynb
