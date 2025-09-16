@@ -17,7 +17,7 @@
 <br />
 <h3 align="center">Dave3625 - Lab3</h3>
 <p align="center">
-  <a href="https://github.com/DAVE3625/DAVE3625-24H/tree/main/Lab2">
+  <a href="https://github.com/Dave3625-Host-2025/tree/main/Lab2">
     <img src="img/header.png" alt="Data wrangling" width="auto" height="auto">
   </a>
 
@@ -27,9 +27,9 @@
     Feature engeneering - on the Titanic dataset <br \>This is a classic dataset used in many data mining tutorials and demos -- perfect for getting started with exploratory analysis and building binary classification models to predict survival.
     <br />
     ·
-    <a href="https://github.com/DAVE3625/DAVE3625-24H/issues">Report Bug</a>
+    <a href="https://github.com/DAVE3625/Dave3625-Host-2025issues">Report Bug</a>
     ·
-    <a href="https://github.com/DAVE3625/DAVE3625-24H/issues">Request Feature</a>
+    <a href="https://github.com/DAVE3625/Dave3625-Host-2025/issues">Request Feature</a>
   </p>
 </p>
 
@@ -67,7 +67,7 @@ Load the titanic set found under /data/Titanic.csv as we did in Lab1
 ## Tasks
 **1. Check for null and nan values**
 
-In lab 1 we used df.isna().sum() to check for nan values. Lets try it again on this dataset.
+In lab 2 we used df.isna().sum() to check for nan values. Lets try it again on this dataset.
 ```python
 df.isna().sum()
 # You can also use df.isnull().sum()
@@ -77,7 +77,7 @@ df.isna().sum()
 Fill Age, Fare and Embarked with sensible values. (Embarked could be filled with "S")
 Since the nan values are defined differently in this dataset, we can use the function right out of the box.
 
-Don't do anything with the Survived column for now.
+Don't do anything with the Survived column for now as we will be using it for the next lab.
 
 During the last lab we showed how to fill nan values with meaningful values. What a meaningful value is differ from dataset to dataset, in this dataset the age value is right skewed, so we will use the median.
 ![skewed-age][skewed-age]
@@ -95,25 +95,22 @@ df["column"] = df["column"].fillna(df["column"].median())
 # To fill with a set value or a char, change .fillna("desired value")
 ``` 
 
-We can also see that many people has a NaN for Cabin. It’s not as easy as just fill a dummy value here. We could fill with “no cabin”, but for machine learning, we like to have numerical or bool values. To achieve this, lets make a new bool column:
+We can also see that many people in the dataset have a NaN value for Cabin. It’s not as easy as just fill a dummy value here. Since almost 77% of the data is missing here we will assume that the missing data indicates that they had no cabin. We could fill with “no cabin”, but for machine learning, we like to have numerical or bool values. To achieve this, lets make a new bool column:
 
 Cabin = True / False
 And set all NaN values = False, all other = True
 ```python
-df["HasCabin"] = df.Cabin.isnull()
+df["HasCabin"] = df.Cabin.notnull()
+# or alternatively: df["HasCabin"] = ~df.Cabin.isnull()
 ```
-do a df.head() and you can see we have a new column, but there is an error. 
-
-Hint: 
-
-[Try to find the error before checking the hint][flip-bool]
+do a df.head() and you can see we have a new column. Note: We want True for passengers who HAVE a cabin, so we use notnull() rather than isnull(). 
 
 Adding a new column based on data available is considered creating a new feature.
 
-**Another viable approach** in this scenario would be to remove the entire column from the dataset. The presence of approximately 77% missing values in the column is considered highly detrimental to the overall quality and integrity of the data. Therefore, another viable option here is just to drop the entire column.
+**Another viable approach** in this scenario would be to remove the entire column from the dataset. The presence of approximately 77% missing values in the column is considered highly detrimental to the overall quality and integrity of the dataset.
 
 **Which did you do and why?**
-****
+
 
 
 
@@ -124,12 +121,14 @@ As we can see from the data set, the syntax for names is
 LastName, Title. RestOfName
 
 ![names][names]
-A easy way to extract a sertan string is to use 
+An easy way to extract a sertan string is to use:
 ```python
 lambda x: re.search(' ([A-Z][a-z]+)\.', x).group(1)
 ```
 
 *What is this syntax? It's called regex, and a [explanation can be found here][regex]*
+
+In this scenario we are looking for groups of letters A-Z or a-z that end with a dot (.), which we then put into groups.
 
 And in our case we would like to put this data in a new column, so we can run 
 ```python
@@ -139,13 +138,13 @@ df["Title"] = df.Name.apply(lambda x: re.search(' ([A-Z][a-z]+)\.', x).group(1))
 Check with df.head() that you now have a column called Title.
 We can now see how many has each title. This can be done in many ways, but calling 
 ```python
-df["column"].value_counts() // you need to replace "column" 
+df["column"].value_counts() # you need to replace "column" 
 # with the name of the column you want to count
 ```
 ![count][cC]
 
 As we can see from the count, we have 18 titles, some of them with only one person. 
-Replace Mlle and Ms with "Miss", and Mme with "Mr" using:
+Replace Mlle and Ms with "Miss", and Mme with "Mrs" using:
 ```python
 df["column"] = df["column"].replace({'xxx':'yyy', 'jjj':'iiii', … 'uuu':'iii'})
 ```
@@ -160,7 +159,7 @@ And do a new count of titels and see if you get something simellare to this:
 
 You can also produce a plot with
 ```python
-sns.countplot(x='Title', data=df); //Seaborn countplot
+sns.countplot(data=df, x='Title')  # Seaborn countplot
 plt.xticks(rotation=45);
 ```
 ![plot][pl1]
@@ -176,7 +175,7 @@ do this for both Age and Fare.
 ****
 **4. Convert dataframe to binary data**
 
-To train a dataset easily, we want all data to be numerical. To achieve this, we need to drop columns that don’t make sense converting to a numerical value. At this point, your dataframe should look something like this:
+In order to use this dataset for ML training, we want all data to be numerical. To achieve this, we need to drop columns that don’t make sense converting to a numerical value. At this point, your dataframe should look something like this:
 
 ![dataframe][table-task4]
 
@@ -184,7 +183,7 @@ Identify columns that we need to drop to convert to a numerical dataset.
 
 [Solution][table-task4-m]
 
-Drop the tabels you identified with
+Drop the columns you identified with
 
 ```python
 df = df.drop(["column1", ... , "columnN"], axis=1)
@@ -211,7 +210,7 @@ In this lab you have:
 * dealt with some of the missing values, binned your numerical data and transformed all features into numeric variables
 * saved the cleaned dataset to your data folder.
 
-#### Part two on monday will focus on how we can use logistic regression to try to fill the *'Survived'* column.
+#### Part two next week will focus on how we can use logistic regression to try to fill the *'Survived'* column.
 
 ## Usefull links
 You can find usefull information about feature engeneering [here][feature-eng-tutorial]
@@ -232,9 +231,9 @@ Distributed under the MIT License. See `LICENSE` for more information.
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 <!-- shields -->
 [issues-shield]: https://img.shields.io/github/issues/umaimehm/Intro_to_AI_2021.svg?style=for-the-badge
-[issues-url]: https://github.com/DAVE3625/DAVE3625-24H/issues
+[issues-url]: https://github.com/DAVE3625/Dave3625-Host-2025/issues
 [license-shield]: https://img.shields.io/github/license/othneildrew/Best-README-Template.svg?style=for-the-badge
-[license-url]: https://github.com/DAVE3625/DAVE3625-24H/blob/main/Lab1/LICENSE
+[license-url]: https://github.com/DAVE3625/Dave3625-Host-2025/blob/main/Lab1/LICENSE
 
 <!-- images -->
 [names]: img/names.png
