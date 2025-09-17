@@ -61,7 +61,7 @@ import re
 ```
 
 
-Load the titanic set found under /data/Titanic.csv as we did in Lab1
+Load the titanic set found under /data/Titanic.csv as we did in last weeks lab.
 
 
 ## Tasks
