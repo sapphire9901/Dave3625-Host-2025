@@ -85,13 +85,12 @@ Good luck, and enjoy the lab!
 
 ## New imports
 
-We will use a new package in this lab. Install it in anaconda prompt (terminal for mac) with:
+We will use a new package in this lab. (scikit-learn)
 
-(Remember ```conda activate DAVEE3625``` first.)
 
-With pip:
+With uv pip: (remember to activate the environment first)
 ```bash
-pip install pandas numpy matplotlib seaborn scikit-learn
+uv pip install pandas numpy matplotlib seaborn scikit-learn
 ```
 With conda:
 ```bash
