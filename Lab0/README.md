@@ -85,15 +85,18 @@ uv --version
 
 ### 2. Create a New UV Project
 
-**Open a new terminal in VS code, move into the Lab0 folder and initialize the UV project:**
+**Open a new terminal in VS code, move into the Lab0 folder *(double check this!)* and initialize the UV project:**
 ```bash
 cd Lab0
 uv init
 ```
 
+
+*Please make sure you are in the right folder!*
+
 This will create a `pyproject.toml` file and a `.venv` folder containing your virtual environment for the project. The `pyproject.toml` file manages your project's dependencies and settings, while the `.venv` folder contains the isolated Python environment with all installed packages. You can select this environment as your Python interpreter in your notebook.
 
-**Note:** Creating separate environments for different projects/labs keeps everything organized and prevents dependency problems. It makes sure that changes in one project won't create issues in another, which will make your work easier to manage and debug.
+**Note:** Creating separate environments for different projects/labs keeps everything organized and prevents dependency problems. It makes sure that changes in one project won't create issues in another, which will make your work easier to manage and debug. 
 
 
 ### 3. Install Python Packages
@@ -106,13 +109,14 @@ uv add jupyter ipykernel
 
 
 ### 4. Create a New Jupyter Notebook
-Create a new Jupyter Notebook by creating a file with a .ipynb extension (e.g., lab0.ipynb).
+Create a new Jupyter Notebook by creating a file with a .ipynb extension (e.g., make a new file and call it lab0.ipynb).
 
 
 
 ### 5. Open the Notebook in VSCode
 Open the notebook file in Visual Studio Code and select the UV environment Python interpreter in the top right.
 
+Can't find the environment? Have a look at the [troubleshooting helper](Lab0/uv-troubleshooting.md). 
 
 ## Part 2: Python Exercises
 
