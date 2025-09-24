@@ -17,19 +17,18 @@
 <br />
 <h3 align="center">Dave3625 - Lab4</h3>
 <p align="center">
-  <a href="https://github.com/DAVE3625/DAVE3625-24H/tree/main/Lab3">
+  <a href="https://github.com/DAVE3625/Dave3625-Host-2025/tree/main/Lab4">
     <img src="img/header.png" alt="Data wrangling" width="auto" height="auto">
   </a>
 
   
 
   <p align="center">
-    Logestic Regression<br>
+    Logistic Regression<br>
     <br />
+    <a href="https://github.com/DAVE3625/Dave3625-Host-2025/issues">Report Bug</a>
     ·
-    <a href="https://github.com/DAVE3625/DAVE3625-24H/issues">Report Bug</a>
-    ·
-    <a href="https://github.com/DAVE3625/DAVE3625-24H/issues">Request Feature</a>
+    <a href="https://github.com/DAVE3625/Dave3625-Host-2025/issues">Request Feature</a>
   </p>
 </p>
 
@@ -86,13 +85,12 @@ Good luck, and enjoy the lab!
 
 ## New imports
 
-We will use a new package in this lab. Install it in anaconda prompt (terminal for mac) with:
+We will use a new package in this lab. (scikit-learn)
 
-(Remember ```conda activate DAVEE3625``` first.)
 
-With pip:
+With uv pip: (remember to activate the environment first)
 ```bash
-pip install pandas numpy matplotlib seaborn scikit-learn
+uv pip install pandas numpy matplotlib seaborn scikit-learn
 ```
 With conda:
 ```bash
@@ -134,7 +132,7 @@ We need to split the dataset into two parts:
 
 **Task 2: Create a New Feature 'TravelAlone'**
 
-According to the kaggle data dictionary the columns **SibSp** and **Parch** are related to traveling with family. Create a new categorical variable: wether or not the individual was travling alone.
+According to the kaggle data dictionary the columns **SibSp** and **Parch** are related to traveling with family. Create a new categorical variable: whether or not the individual was traveling alone.
 
 **Instructions:**
 
@@ -150,7 +148,7 @@ Code:
 df_train.loc[:, 'TravelAlone'] = np.where((df_train["SibSp"] + df_train["Parch"]) > 0, 0, 1) 
 
 # or using boolean check
-df['TravelAlone'] = (df['SibSp'] + df['Parch'] == 0).astype(int)
+df_train['TravelAlone'] = (df_train['SibSp'] + df_train['Parch'] == 0).astype(int)
 ```
 
 ****
@@ -214,7 +212,7 @@ Code:
 
 ```python
 # Compute correlation matrix
-correlation_matrix = train_df.corr()
+correlation_matrix = df_train.corr()
 
 #Visualize the Correlation Matrix
 plt.figure(figsize=(10, 8))
